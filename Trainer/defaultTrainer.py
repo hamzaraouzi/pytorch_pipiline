@@ -63,7 +63,7 @@ class DefaultClassificationTrainer:
         self.model.to(device = self.device)
 
         #training loop
-        old_accurcy = 0
+        best_accurcy = 0
         for epoch in range(self.num_epochs):
             #TODO: logging an epoch is staring
 
@@ -74,15 +74,25 @@ class DefaultClassificationTrainer:
                                                 citerion = self.criterion, device=self.device)
         
             #TODO: calculate tarining / validation metrics and logging it
-            accuracy =None # it will be calculated
+            val_accuracy =None # it will be calculated
             
-            if accuracy > old_accuracy:
+            no_improvement = 0
+            if val_accuracy > best_accuracy:
                 #probebly we will need a directory for artifacts
                 checkpoint_path = self.model.name
                 
                 self.model.save_checkpoint(model= self.model, optimizer=self.optimizer, file_name=checkpoint_path)
-                old_accuracy = accuracy
+                best_accuracy = val_accuracy
+                no_improvement = 0
             
+            
+            elif val_accuracy == best_accuracy and no_improvement < early_stopping:
+                no_improvement +=1
+            
+            elif val_accuracy == best_accuracy and no_improvement == early_stopping:
+                break
+            
+
             #TODO: implement early stopping test
             
     ###TODO: code training with k-fold Cross Validation
