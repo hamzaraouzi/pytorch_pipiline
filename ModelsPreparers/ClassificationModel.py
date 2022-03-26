@@ -1,6 +1,8 @@
 
 import torch.nn as nn
 import yaml
+from .imageClassificationModels.mobileNet_v3 import MobileNetV3
+from .imageClassificationModels.abstractClassifier import AbstractClassifier
 
 
 class ClassificationModel: #we need to inherent from the class step
@@ -25,9 +27,18 @@ class ClassificationModel: #we need to inherent from the class step
     
         return params2values
     
-    def prepareModel(self, model_name, num_classes) -> nn.Module:
-        pass
+    def prepareModel(self, model_name, num_classes, pretrained) -> AbstractClassifier:
+        if model_name == 'mobileNetV3-large':
+            return MobileNetV3(mode='large', num_classes=num_classes)
+        
+        if model_name == 'mobileNetV3-small':
+            return MobileNetV3(mode='small', num_classes=num_classes)
+        
+
     
 
     def run(self):
-        return self.prepareModel(self.model_name, self.num_classes)
+        return self.prepareModel(self.model_name, self.num_classes, self.pretrained)
+    
+    def __call__(self):
+        return self.run()

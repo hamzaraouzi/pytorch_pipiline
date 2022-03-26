@@ -3,3 +3,5 @@ test_trainer.yaml
 Trainer/__pycache__/AbtsractTrainer.cpython-39.pyc
 Trainer/__pycache__/DefaultClassificationTrainer.cpython-39.pyc
 test_classificationModel.yaml
+tests.ipynb
+ModelsPreparers/__pycache__/ClassificationModel.cpython-39.pyc
