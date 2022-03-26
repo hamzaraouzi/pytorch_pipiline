@@ -88,6 +88,8 @@ class DefaultClassificationTrainer(AbstractTrainer):
             
     ###TODO: code training with k-fold Cross Validation
 
+
+    #the run function must be defined in parent classes as astract method (AbstractTrainer, Step)
     def run(self,  model:nn.Module,
         train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
          
@@ -104,7 +106,5 @@ class DefaultClassificationTrainer(AbstractTrainer):
 
     def __call__(self, model:nn.Module,
         train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
-
-
-        self.run(model,
-        train_loader, val_loader, k)
+        
+        self.run(model, train_loader, val_loader, k)

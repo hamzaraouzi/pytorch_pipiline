@@ -1,5 +1,4 @@
-
-
+from typing import Optional
 from abc import abstractmethod
 import yaml
 import torch.nn as nn
@@ -57,6 +56,11 @@ class AbstractTrainer:
     @abstractmethod
     def train(self,  model:nn.Module,
         train_loader: DataLoader, val_loader: DataLoader):
+        pass
+    
+    @abstractmethod
+    def run(self,  model:nn.Module,
+        train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
         pass
     
     # TODO
