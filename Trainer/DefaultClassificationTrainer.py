@@ -1,10 +1,10 @@
-import torch
+from typing import Optional
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import logging
 import torch.optim as optim
 from sklearn.metrics import accuracy_score
-from AbtsractTrainer import AbstractTrainer
+from .AbtsractTrainer import AbstractTrainer
 
 class DefaultClassificationTrainer(AbstractTrainer):
     
@@ -13,22 +13,22 @@ class DefaultClassificationTrainer(AbstractTrainer):
         super(DefaultClassificationTrainer, self).__init__(config_path=config_path)
         
         self.criterion = self.define_criterion()
-        self.optimizer = self.define_optimizer() 
+        
 
         #TODO: 1) We need to think a way for logging in terminal with logger,
         #and mean while thinking about tools like MLFlow and TensorBoard
 
     def define_criterion(self):                                                                 
-        if self.model.out_dim == 1 or self.task =='multilabel_classification':                                                         #
+        if self.task =='binary_classification' or self.task =='multilabel_classification':                                                         #
             #TODO: don't forge about criterions parameters,                                    
             # we need to have the ability to set what values we want                               
             return nn.BCELoss()                                                                             
         
-        elif self.task == 'classfication':                                                                                        #
+        elif self.task == 'classification':                                                                                        #
             return nn.CrossEntropyLoss()                                                            
     
 
-    def define_optimizer(self):                                               
+    def define_optimizer(self, model):                                               
         # ##############################################################                        
         # args: optimizer name , it will be loaded from the conf file  #                        
         #                                                              #                            
@@ -37,8 +37,11 @@ class DefaultClassificationTrainer(AbstractTrainer):
                                                                                                         
         #for now i will return just ADAM for tests                                                                  
         # TODO: later I have to add all the rest algorithms that are available on pytorch       
-        return  optim.Adam(self.model.parameters())                                             
+        return  optim.Adam(model.parameters())                                             
                                                       
+    #def log_metrics():
+
+
 
 
     def train(self,  model:nn.Module,
@@ -84,3 +87,24 @@ class DefaultClassificationTrainer(AbstractTrainer):
             
             
     ###TODO: code training with k-fold Cross Validation
+
+    def run(self,  model:nn.Module,
+        train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
+         
+        self.optimizer = self.define_optimizer(model)
+
+        if not self.kfold:
+            if val_loader is  not None:
+                self.train(model, train_loader, val_loader)
+
+            #else:
+                #logging warning or Error that the user must either use Train/val/test split or kfoldCrossvalidation   
+        #else:
+            # training kfold cross validation 
+
+    def __call__(self, model:nn.Module,
+        train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
+
+
+        self.run(model,
+        train_loader, val_loader, k)

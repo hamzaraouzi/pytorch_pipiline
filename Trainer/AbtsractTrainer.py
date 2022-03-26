@@ -10,10 +10,11 @@ class AbstractTrainer:
         #self.logger
         
         params2values, self.optimizer_prameters = self.load_check_conf_file(config_path)
-        
+
+        self.task = params2values['task']
         self.device = params2values['device']
         self.num_epochs = params2values['num_epochs']
-        self.early_stopping = params2values['early_stopping']
+        self.early_stopping = params2values['earlystoping_after']
         self.kfold = params2values['kfold']
 
 
@@ -39,7 +40,8 @@ class AbstractTrainer:
                         for kk, vv in zip(dd.keys(), dd.values()):
                             if kk!='optimizer':
                                 optimizer_parameters[kk] = vv
-            
+        
+
         return params2values, optimizer_parameters
 
 
@@ -57,9 +59,10 @@ class AbstractTrainer:
         train_loader: DataLoader, val_loader: DataLoader):
         pass
     
-    @abstractmethod
-    def calculate_metrics(self):
-        pass
+    # TODO
+    #@abstractmethod
+    #def log_metrics(self):
+    #    pass
     
     # TODO
     #@abstractmethod
