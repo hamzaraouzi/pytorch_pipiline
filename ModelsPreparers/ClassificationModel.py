@@ -2,6 +2,7 @@
 import torch.nn as nn
 import yaml
 from .imageClassificationModels.mobileNet_v3 import MobileNetV3
+from .imageClassificationModels.mobileNetV2 import MobileNetV2
 from .imageClassificationModels.abstractClassifier import AbstractClassifier
 
 
@@ -33,6 +34,9 @@ class ClassificationModel: #we need to inherent from the class step
         
         if model_name == 'mobileNetV3-small':
             return MobileNetV3(mode='small', num_classes=num_classes)
+        
+        if model_name == 'mobileNetV2':
+            return MobileNetV2(num_classes=num_classes)
         
 
     
