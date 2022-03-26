@@ -62,9 +62,9 @@ class DefaultClassificationTrainer(AbstractTrainer):
             val_loss, y_val_true, y_val_pred = model.one_val_epoch(val_laoder = val_loader, 
                                                 citerion = self.criterion, device=self.device)
         
-            #TODO: logging accuracies and losses and that an epoch is completed
-            val_accuracy =None # it will be calculated
             
+            val_accuracy =accuracy_score(y_val_true.detach().cpu(), y_val_pred.detach().cpu() > 0.5) 
+            #TODO: logging accuracies and losses and that an epoch is completed
 
 
             no_improvement = 0
