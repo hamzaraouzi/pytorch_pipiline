@@ -29,7 +29,7 @@ class AbstractClassifier(nn.Module):
                 X, y = X.to(device), y.to(device)
                 y_pred = self(X)
 
-                loss = criterion(y_pred.float(), y.float())
+                loss = criterion(y_pred, y)
                 test_loss += loss.item()
 
                 #calculate accuracy for each label
@@ -43,7 +43,7 @@ class AbstractClassifier(nn.Module):
 
 
 
-    def train_on_epoch(self,train_loader, criterion, optimizer, device):
+    def one_train_epoch(self,train_loader, criterion, optimizer, device):
             
         self.train()
         train_loss  = 0
@@ -60,7 +60,7 @@ class AbstractClassifier(nn.Module):
             optimizer.zero_grad()
             y_pred = self(X)
             
-            loss = criterion(y_pred.float(), y.float())
+            loss = criterion(y_pred, y)
             loss.backward()
             optimizer.step()
             train_loss += loss.item()

@@ -44,7 +44,7 @@ class DefaultClassificationTrainer(AbstractTrainer):
 
 
 
-    def train(self,  model:nn.Module,
+    def train(self,  model,
         train_loader: DataLoader, val_loader: DataLoader):
         #this is just an early version of the code that, will be parts like logging
         #saving and registring models ...
@@ -57,10 +57,10 @@ class DefaultClassificationTrainer(AbstractTrainer):
             #TODO: logging an epoch is staring
 
             train_loss, y_train_true, y_train_pred = model.one_train_epoch(train_loader = train_loader, 
-                        citerion = self.criterion, optimizer=self.optmizer)
+                        criterion = self.criterion, optimizer=self.optimizer, device=self.device)
             
-            val_loss, y_val_true, y_val_pred = model.one_val_epoch(val_laoder = val_loader, 
-                                                citerion = self.criterion, device=self.device)
+            val_loss, y_val_true, y_val_pred = model.one_val_epoch(val_loader = val_loader, 
+                                                criterion = self.criterion, device=self.device)
         
             
             val_accuracy =accuracy_score(y_val_true.detach().cpu(), y_val_pred.detach().cpu() > 0.5) 
@@ -76,6 +76,7 @@ class DefaultClassificationTrainer(AbstractTrainer):
                 model.save_checkpoint(model= model, optimizer=self.optimizer, file_name=checkpoint_path)
                 best_accuracy = val_accuracy
                 no_improvement = 0
+                print(f'validation accuracy is : {val_accuracy}')
             
             # early stopping
             elif val_accuracy == best_accuracy and no_improvement < self.early_stopping:
