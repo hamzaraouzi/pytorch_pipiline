@@ -16,11 +16,11 @@ class AbstractClassifier(nn.Module):
 
 
     
-    def one_val_epoch(self, test_loader, criterion, device):
+    def one_val_epoch(self, val_loader, criterion, device):
 
-        loop = tqdm(test_loader, leave=True)
+        loop = tqdm(val_loader, leave=True)
         self.eval()
-        test_loss = 0
+        val_loss = 0
         #accuracies = torch.zeros(4, device=device) #4 is the number of labels it will be changed in other projects 
         all_pred = []
         all_true = []
@@ -30,7 +30,7 @@ class AbstractClassifier(nn.Module):
                 y_pred = self(X)
 
                 loss = criterion(y_pred, y)
-                test_loss += loss.item()
+                val_loss += loss.item()
 
                 #calculate accuracy for each label
                 #y_pred = y_pred > 0.5
@@ -38,7 +38,7 @@ class AbstractClassifier(nn.Module):
                 #accuracies += y_pred.eq(y).sum(dim=0)
                 all_pred.append(y_pred)
                 all_true.append(y)
-            return test_loss, torch.cat(all_true), torch.cat(all_pred)
+            return val_loss, torch.cat(all_true), torch.cat(all_pred)
 
 
 
