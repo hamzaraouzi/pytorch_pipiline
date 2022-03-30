@@ -20,8 +20,7 @@ class DefaultClassificationTrainer(AbstractTrainer):
 
     def define_criterion(self):                                                                 
         if self.task =='binary_classification' or self.task =='multilabel_classification':                                                         #
-            #TODO: don't forge about criterions parameters,                                    
-            # we need to have the ability to set what values we want                               
+                                        
             return nn.BCELoss()                                                                             
         
         elif self.task == 'classification':                                                                                        #
@@ -37,7 +36,19 @@ class DefaultClassificationTrainer(AbstractTrainer):
                                                                                                         
         #for now i will return just ADAM for tests                                                                  
         # TODO: later I have to add all the rest algorithms that are available on pytorch       
-        return  optim.Adam(model.parameters())                                             
+        if self.optimizer_prameters['name'] == 'Adam':
+            return  optim.Adam(model.parameters(), lr=self.optimizer_prameters['lr'],
+             betas=self.optimizer_prameters['betas'], weight_decay=self.optimizer_prameters['weight_decay'])
+        
+        if self.optimizer_prameters['name'] =='SGD':
+            return optim.SGD(model.parameters(), lr=self.optimizer_prameters['lr'], 
+                    momentum=self.optimizer_prameters['momentum'], dampening=self.optimizer_prameters['dampening'],
+                    nestrove=self.optimizer_prameters['nestrove'])
+
+        if self.optimizer.parameters['name'] == 'RMSprop':
+            return optim.RMSprop(model.parameters(), lr=self.optimizer_prameters['lr'],
+                momentum=self.optimizer_prameters['momentum'], alpha=self.optimizer_prameters['alpha'],
+                weight_decay=self.optimizer_prameters['weight_decay'] )                                          
                                                       
     #def log_metrics():
 
