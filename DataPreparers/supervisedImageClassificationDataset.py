@@ -8,12 +8,13 @@ import pandas as pd
 
 class SupervisedImageClassicationDataset(Dataset):
 
-    def __init__(self, img_dir:str, csv_file:str, target_column:str,split:str, sampling:str
+    def __init__(self, img_dir:str, df:pd.DataFrame, target_column:str, sampling:str
         ,transform:transforms):
         
 
-        self.df = pd.read_csv(csv_file)
+        self.df = df
         self.target_column = target_column
+        
         self.img_dir = img_dir
         self.transform = transform
         
