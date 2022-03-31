@@ -19,6 +19,7 @@ class PrepareDataLoader:
         self.target_column = parameters['target_column']
         self.split = parameters['split']
         ###TODO we need to add splits ratios
+        ######################################
         self.sampling = parameters['sampling']
 
         
