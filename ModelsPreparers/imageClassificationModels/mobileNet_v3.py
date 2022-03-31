@@ -197,4 +197,14 @@ class MobileNetV3(AbstractClassifier):
     
         return x
     
+    @staticmethod
+    def prepareModel(model_name: str, num_classes:int):
+        
+        if model_name == 'mobileNetV3-large':
+            return MobileNetV3(mode='large', num_classes=num_classes)
+        
+        if model_name == 'mobileNetV3-small':
+            return MobileNetV3(mode='small', num_classes=num_classes)
+        
+    
     

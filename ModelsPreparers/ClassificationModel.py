@@ -31,17 +31,14 @@ class ClassificationModel: #we need to inherent from the class step
         return params2values
     
     def prepareModel(self, model_name, num_classes, pretrained) -> AbstractClassifier:
-        if model_name == 'mobileNetV3-large':
-            return MobileNetV3(mode='large', num_classes=num_classes)
+        if model_name.split('-')[0] == 'mobileNetV3':
+            return MobileNetV3.prepareModel(model_name, num_classes)
         
-        if model_name == 'mobileNetV3-small':
-            return MobileNetV3(mode='small', num_classes=num_classes)
+        if model_name.split('-')[0] == 'mobileNetV2':
+            return MobileNetV2.prepareModel(model_name, num_classes)
         
-        if model_name == 'mobileNetV2':
-            return MobileNetV2(num_classes=num_classes)
-        
-        if model_name == 'Xception':
-            return Xception(num_classes=num_classes)
+        if model_name.split('-')[0] == 'Xception':
+            return Xception.prepareModel(model_name, num_classes)
         
 
     

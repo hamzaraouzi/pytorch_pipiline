@@ -171,3 +171,7 @@ class Xception(AbstractClassifier):
     x = self.exit_flow(x)
 
     return x
+
+  @staticmethod
+  def prepareModel(model_name: str, num_classes:int):
+    return Xception(num_classes=num_classes)

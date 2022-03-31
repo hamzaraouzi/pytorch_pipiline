@@ -13,7 +13,9 @@ class AbstractClassifier(nn.Module):
     def forward(self, x:torch.TensorType):
         pass
     
-
+    @abstractmethod
+    def prepareModel(model_name: str, num_classes:int):
+        pass
 
     
     def one_val_epoch(self, val_loader, criterion, device):

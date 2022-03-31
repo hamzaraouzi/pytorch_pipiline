@@ -119,3 +119,8 @@ class MobileNetV2(AbstractClassifier):
         x = x.reshape(x.shape[0], -1)
         x = self.classifier(x)
         return x
+
+
+    @staticmethod
+    def prepareModel(model_name: str, num_classes:int):
+        return MobileNetV2(num_classes=num_classes)
