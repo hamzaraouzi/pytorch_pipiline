@@ -19,7 +19,7 @@ class DefaultClassificationTrainer(AbstractTrainer):
         #and mean while thinking about tools like MLFlow and TensorBoard
 
     def define_criterion(self):                                                                 
-        if self.task =='binary_classification' or self.task =='multilabel_classification':                                                         #
+        if self.task =='binary_classification':
                                         
             return nn.BCELoss()                                                                             
         
