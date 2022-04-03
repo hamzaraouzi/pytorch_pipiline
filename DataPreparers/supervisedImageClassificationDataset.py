@@ -1,3 +1,4 @@
+from typing import Optional
 import torch
 from  torch.utils.data import Dataset
 import os
@@ -8,19 +9,19 @@ import pandas as pd
 
 class SupervisedImageClassicationDataset(Dataset):
 
-    def __init__(self, img_dir:str, df:pd.DataFrame, target_column:str, sampling:str
-        ,transform:transforms):
+    def __init__(self, img_dir:str, df:pd.DataFrame, target_column:str, sampling:Optional[str]
+        ,transform=None):
         
 
         self.df = df
+        self.df.reset_index(inplace=True)
+
         self.target_column = target_column
         
         self.img_dir = img_dir
         self.transform = transform
         
     
-
-        
     def __len__(self):
         return len(self.df)
     
@@ -32,4 +33,5 @@ class SupervisedImageClassicationDataset(Dataset):
         img_path = os.path.join(self.img_dir, image_name)
         img = Image.open(img_path).convert('RGB')
 
-        return self.transform(img), torch.tensor(y)        
+        img = self.transform(img) if self.transform is not None else img
+        return img, torch.tensor(y)        

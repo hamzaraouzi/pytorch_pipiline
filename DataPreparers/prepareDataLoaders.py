@@ -3,8 +3,8 @@ from cv2 import split
 import yaml
 import pandas as pd
 from supervisedImageClassificationDataset import SupervisedImageClassicationDataset
-
-
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader
 
 
 class PrepareDataLoader:
@@ -18,10 +18,11 @@ class PrepareDataLoader:
         self.img_dir  = parameters['img_dir']   
         self.target_column = parameters['target_column']
         self.split = parameters['split']
+        self.ratios = parameters['ratios'] # {train: ,val: ,test: } or {train: ,test: } 
         ###TODO we need to add splits ratios
         ######################################
         self.sampling = parameters['sampling']
-
+        self.batch_size = parameters['batch_size']
         
          
 
@@ -31,11 +32,41 @@ class PrepareDataLoader:
 
     def __call__(self):
         #TODO handel ratios and diffrents splits
-        if self.split == 'train-test':
-            pass
+        df = pd.read_csv(self.csv_file)
         
+        train_df, test_df = train_test_split(df, test_size=self.ratios['test'])
+        if self.split == 'train-test':
+            
+            
+            train_ds = SupervisedImageClassicationDataset(img_dir = self.img_dir, df=train_df, 
+            target_column=self.target_column, sampling=None, transform=None)
+
+            test_ds = SupervisedImageClassicationDataset(img_dir = self.img_dir, df=test_df, 
+            target_column=self.target_column, sampling=None, transform=None)
+            
+            train_loader = DataLoader(train_ds, batch_size=self.batch_size, shuffle=True, num_workers=2)
+            test_loader = DataLoader(test_ds, batch_size=self.batch_size, shuffle=True, num_workers=2)
+            return train_loader, test_loader
+
         if self.split == 'train-val-test':
-            pass
+
+            val_df , test_df = train_test_split(test_df, test_size=self.ratios['test']/(self.ratios['test'] + self.ratios['val'])) 
+
+            train_ds = SupervisedImageClassicationDataset(img_dir = self.img_dir, df=train_df, 
+            target_column=self.target_column, sampling=None, transform=None)
+
+            test_ds = SupervisedImageClassicationDataset(img_dir = self.img_dir, df=test_df, 
+            target_column=self.target_column, sampling=None, transform=None)
+            
+
+            val_ds = SupervisedImageClassicationDataset(img_dir = self.img_dir, df=val_df, 
+            target_column=self.target_column, sampling=None, transform=None)
+
+            train_loader = DataLoader(train_ds, batch_size=self.batch_size, shuffle=True, num_workers=2)
+            test_loader = DataLoader(test_ds, batch_size=self.batch_size, shuffle=True, num_workers=2)
+            val_loader = DataLoader(val_ds, batch_size=self.batch_size, shuffle=True, num_workers=2)
+
+            return train_loader, val_loader, test_loader 
 
 
     def load_check_conf_file(self, config_path):
