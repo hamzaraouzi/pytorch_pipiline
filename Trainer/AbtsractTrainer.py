@@ -60,7 +60,7 @@ class AbstractTrainer:
     
     @abstractmethod
     def run(self,  model:nn.Module,
-        train_loader: DataLoader, val_loader: Optional[DataLoader], k=Optional[int]):
+        train_loader: DataLoader, val_loader: Optional[DataLoader]):
         pass
     
     # TODO
