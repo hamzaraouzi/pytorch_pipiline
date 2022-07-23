@@ -90,15 +90,14 @@ class DefaultClassificationTrainer(AbstractTrainer):
                 print(f'validation accuracy is : {val_accuracy}')
             
             # early stopping
-            elif val_accuracy == best_accuracy and no_improvement < self.early_stopping:
+            elif val_accuracy <= best_accuracy and no_improvement < self.early_stopping:
                 no_improvement +=1
             
-            elif val_accuracy == best_accuracy and no_improvement == self.early_stopping:
+            elif val_accuracy <= best_accuracy and no_improvement == self.early_stopping:
                 #TODO: logg a message that no improvement has been made for the {no_improvement} epochs
                 break
             
             
-    ###TODO: code training with k-fold Cross Validation
 
 
     #the run function must be defined in parent classes as astract method (AbstractTrainer, Step)

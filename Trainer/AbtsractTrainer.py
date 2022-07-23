@@ -14,7 +14,7 @@ class AbstractTrainer:
         self.device = params2values['device']
         self.num_epochs = params2values['num_epochs']
         self.early_stopping = params2values['earlystoping_after']
-        self.kfold = params2values['kfold']
+        
 
 
     def load_check_conf_file(self, config_path):        
@@ -68,8 +68,3 @@ class AbstractTrainer:
     #def log_metrics(self):
     #    pass
     
-    # TODO
-    #@abstractmethod
-    #def kfold_train(self,  model:nn.Module,
-    #    train_loader: DataLoader, k:int):
-    #    pass
