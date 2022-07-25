@@ -3,7 +3,7 @@ from abc import abstractmethod
 import yaml
 import torch.nn as nn
 from torch.utils.data import DataLoader
-
+from ..experiment_trackers.abstractTracker import AbstractTracker
 class AbstractTrainer:
     def __init__(self, config_path) -> None:
         #self.logger
@@ -14,6 +14,8 @@ class AbstractTrainer:
         self.device = params2values['device']
         self.num_epochs = params2values['num_epochs']
         self.early_stopping = params2values['earlystoping_after']
+        self.project = params2values['project']
+        self.experiment_tracker = params2values['experiment_tracker']
         
 
 
@@ -44,6 +46,11 @@ class AbstractTrainer:
         return params2values, optimizer_parameters
 
 
+
+    def define_exp_tracker(self)->AbstractTracker:
+        return AbstractTracker.prepareTracker(project= self.project, tracking_conf=self.experiment_tracker)
+    
+
     @abstractmethod
     def define_criterion(self):
         pass
@@ -63,8 +70,8 @@ class AbstractTrainer:
         train_loader: DataLoader, val_loader: Optional[DataLoader]):
         pass
     
-    # TODO
-    #@abstractmethod
-    #def log_metrics(self):
-    #    pass
+
+    @abstractmethod
+    def log_metrics(self, exp_tracker:AbstractTracker, **kwrags):
+        pass
     

@@ -3,20 +3,18 @@ import torch
 from  torch.utils.data import Dataset
 import os
 from  PIL import Image 
-from torchvision import transforms
 import pandas as pd
 
 
 class SupervisedImageClassicationDataset(Dataset):
 
-    def __init__(self, img_dir:str, df:pd.DataFrame, target_column:str, sampling:Optional[str]
-        ,transform=None):
+    def __init__(self, img_dir:str, df:pd.DataFrame, transform):
         
 
         self.df = df
         self.df.reset_index(inplace=True)
 
-        self.target_column = target_column
+        self.target_column = "class"
         
         self.img_dir = img_dir
         self.transform = transform

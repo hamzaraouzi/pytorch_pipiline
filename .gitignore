@@ -6,3 +6,4 @@ test_classificationModel.yaml
 tests.ipynb
 ModelsPreparers/__pycache__/ClassificationModel.cpython-39.pyc
 
+test_datapreparers.yaml

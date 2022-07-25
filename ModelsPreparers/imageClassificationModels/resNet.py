@@ -123,7 +123,6 @@ class Residual_blockB(nn.Module):
         if self.downsample:
             stride = 2
             self.projection = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False)
-            #TODO i may need BN here
 
 
         self.conv_layers = nn.Sequential(

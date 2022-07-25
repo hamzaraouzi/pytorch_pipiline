@@ -1,10 +1,12 @@
-
-from pyparsing import null_debug_action
 import torch.nn as nn
 import yaml
 from .imageClassificationModels.mobileNet_v3 import MobileNetV3
 from .imageClassificationModels.mobileNetV2 import MobileNetV2
+from .imageClassificationModels.mobileNetV1 import MobileNetV1
+from .imageClassificationModels.resNet import Resnet101
+from .imageClassificationModels.resNet import Resnet34
 from .imageClassificationModels.xception import Xception
+
 from .imageClassificationModels.abstractClassifier import AbstractClassifier
 
 
@@ -31,17 +33,23 @@ class ClassificationModel: #we need to inherent from the class step
         return params2values
     
     def prepareModel(self, model_name, num_classes, pretrained) -> AbstractClassifier:
-        if model_name.split('-')[0] == 'mobileNetV3':
+        if model_name == 'mobileNetV3':
             return MobileNetV3.prepareModel(model_name, num_classes)
         
-        if model_name.split('-')[0] == 'mobileNetV2':
+        if model_name == 'mobileNetV2':
             return MobileNetV2.prepareModel(model_name, num_classes)
         
-        if model_name.split('-')[0] == 'Xception':
+        if model_name == 'Xception':
             return Xception.prepareModel(model_name, num_classes)
         
+        if model_name == 'mobileNetV1':
+            return MobileNetV1.prepareModel(model_name, num_classes)
 
-    
+        if model_name == 'resnet34':
+            return Resnet34.prepareModel(model_name, num_classes)
+
+        if model_name == 'resnet101':
+            return Resnet101.prepareModel(model_name, num_classes)
 
     def run(self):
         return self.prepareModel(self.model_name, self.num_classes, self.pretrained)
